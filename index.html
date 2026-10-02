@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maison Aurelle | Classic Fashion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== COLOURS (change these to restyle the whole site) ===== */
+:root{
+  --navy:#1c2540; --ivory:#f7f3ea; --gold:#a8843a; --charcoal:#2b2b2b;
+  --stone:#e6dfcf; --white:#fffdf8;
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Jost','Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:var(--sans);background:var(--ivory);color:var(--charcoal);line-height:1.6}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;color:var(--navy);line-height:1.15}
+h2{font-size:2.4rem;margin-bottom:8px}
+section{padding:80px 0}
+
+/* ===== HEADER + MENU ===== */
+header{position:sticky;top:0;z-index:50;background:var(--navy);color:var(--ivory)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--serif);font-size:1.7rem;letter-spacing:.04em}
+.logo span{color:var(--gold)}
+nav ul{display:flex;gap:30px;list-style:none}
+nav a{font-size:.95rem;letter-spacing:.06em;padding:6px 0;border-bottom:1px solid transparent}
+nav a:hover{border-color:var(--gold)}
+.menu-btn{display:none;background:none;border:1px solid var(--gold);color:var(--ivory);padding:6px 12px;font:inherit;cursor:pointer}
+@media(max-width:760px){
+  .menu-btn{display:block}
+  nav{display:none;position:absolute;top:68px;left:0;right:0;background:var(--navy);padding:12px 24px 20px}
+  nav.open{display:block}
+  nav ul{flex-direction:column;gap:14px}
+}
+
+/* ===== HERO ===== */
+.hero{background:var(--navy);color:var(--ivory);padding:110px 0 100px;text-align:center}
+.hero h1{color:var(--ivory);font-size:clamp(2.6rem,7vw,5rem);font-style:italic}
+.hero p{max-width:520px;margin:20px auto 34px;opacity:.85;font-weight:300}
+.btn{display:inline-block;background:var(--gold);color:var(--white);padding:13px 30px;border:none;font:500 .95rem var(--sans);letter-spacing:.05em;cursor:pointer;transition:background .2s}
+.btn:hover{background:#8f6f2c}
+
+/* ===== SHOP: SEARCH + FILTER + GRID ===== */
+.tools{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin:28px 0 36px}
+.search{flex:1 1 260px;padding:12px 16px;border:1px solid var(--gold);background:var(--white);font:inherit;color:inherit}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters button{padding:9px 18px;background:transparent;border:1px solid var(--navy);color:var(--navy);font:inherit;cursor:pointer}
+.filters button.active{background:var(--navy);color:var(--ivory)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:28px}
+.card{background:var(--white);border:1px solid var(--stone);cursor:pointer;transition:border-color .2s;text-align:left;font:inherit;color:inherit;padding:0}
+.card:hover{border-color:var(--gold)}
+.swatch{height:240px;display:flex;align-items:center;justify-content:center;font:italic 3.2rem var(--serif);color:rgba(255,255,255,.85)}
+.info{padding:16px 18px 20px}
+.info h3{font-size:1.4rem}
+.info small{color:#777}
+.price{color:var(--gold);font-weight:500;margin-top:6px}
+.empty{padding:40px 0;color:#666}
+
+/* ===== ABOUT ===== */
+.about{background:var(--white)}
+.about .wrap{max-width:720px}
+.about p{margin-top:16px;font-family:var(--serif);font-size:1.3rem}
+
+/* ===== CONTACT ===== */
+form{display:grid;gap:16px;max-width:560px;margin-top:28px}
+label{font-size:.9rem;color:var(--navy);display:grid;gap:6px}
+input,textarea{padding:12px 14px;border:1px solid #bdb59f;background:var(--white);font:inherit;color:inherit}
+textarea{min-height:130px;resize:vertical}
+.err{color:#9b2c2c;font-size:.85rem;min-height:1em}
+.ok{display:none;padding:16px;border:1px solid var(--gold);background:var(--white);margin-top:16px;max-width:560px}
+
+footer{background:var(--navy);color:var(--ivory);text-align:center;padding:28px;font-size:.9rem;opacity:.95}
+
+/* ===== PRODUCT POPUP ===== */
+.modal{position:fixed;inset:0;background:rgba(20,26,48,.7);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
+.modal.show{display:flex}
+.panel{background:var(--ivory);max-width:420px;width:100%;position:relative}
+.panel .swatch{height:200px}
+.panel .info{padding:24px}
+.close{position:absolute;top:8px;right:12px;background:none;border:none;font-size:2rem;color:#fff;cursor:pointer}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a href="#home" class="logo">Maison <span>Aurelle</span></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav">Menu</button>
+    <nav id="mainNav" aria-label="Main">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#collection">Collection</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="wrap">
+      <h1>Timeless style, tailored for you</h1>
+      <p>Refined wardrobe essentials in wool, silk and linen, made to be worn for decades.</p>
+      <a class="btn" href="#collection">Browse the collection</a>
+    </div>
+  </section>
+
+  <section id="collection">
+    <div class="wrap">
+      <h2>The collection</h2>
+      <p>Search by name or choose a category.</p>
+      <div class="tools">
+        <input class="search" id="search" type="search" placeholder="Search pieces, e.g. coat" aria-label="Search the collection">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>No pieces match your search. Try a different word or category.</p>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <h2>About the house</h2>
+      <p>Founded on the belief that good clothes outlast trends, Maison Aurelle designs a small collection each season in natural fabrics, cut with classic proportions and finished by hand.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <h2>Contact us</h2>
+      <p>Questions about sizing, orders or appointments? Send us a message.</p>
+      <form id="contactForm" novalidate>
+        <label>Name <input id="name" type="text" autocomplete="name"><span class="err" id="nameErr"></span></label>
+        <label>Email <input id="email" type="email" autocomplete="email"><span class="err" id="emailErr"></span></label>
+        <label>Message <textarea id="msg"></textarea><span class="err" id="msgErr"></span></label>
+        <button class="btn" type="submit">Send message</button>
+      </form>
+      <div class="ok" id="ok" role="status">Thank you. Your message has been sent and we will reply within two working days.</div>
+    </div>
+  </section>
+</main>
+
+<footer>&copy; <span id="year"></span> Maison Aurelle. All rights reserved.</footer>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="close" id="closeBtn" aria-label="Close">&times;</button>
+    <div class="swatch" id="mSwatch"></div>
+    <div class="info">
+      <h3 id="mTitle"></h3><small id="mCat"></small>
+      <p id="mDesc" style="margin:10px 0"></p>
+      <div class="price" id="mPrice"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== YOUR PRODUCTS =====
+   Add, remove or edit items here. Each one needs a name, category, price,
+   description and colour. To use a real photo later, see the note in showCards(). */
+const products = [
+  {name:"Camel Overcoat", cat:"Outerwear", price:420, color:"#a67c52", desc:"Double-faced wool coat with a notch collar and hidden buttons."},
+  {name:"Navy Blazer", cat:"Tailoring", price:360, color:"#1c2540", desc:"Single-breasted blazer in fine merino with a half-canvas build."},
+  {name:"Silk Blouse", cat:"Shirts", price:190, color:"#8a8f7a", desc:"Washed silk blouse with a pussy-bow tie neck and pearl buttons."},
+  {name:"Pleated Trousers", cat:"Tailoring", price:210, color:"#5b5b57", desc:"High-waisted wool trousers with a single pleat and tapered leg."},
+  {name:"Oxford Shirt", cat:"Shirts", price:140, color:"#9fb0c4", desc:"Crisp cotton Oxford with a button-down collar. Wears well untucked."},
+  {name:"Trench Coat", cat:"Outerwear", price:480, color:"#b59d76", desc:"Water-resistant cotton gabardine trench with a belted waist."},
+  {name:"Cashmere Scarf", cat:"Accessories", price:110, color:"#7b2d3b", desc:"Soft, generously sized scarf in Scottish cashmere."},
+  {name:"Leather Belt", cat:"Accessories", price:85, color:"#4a3426", desc:"Vegetable-tanned leather with a solid brass buckle."}
+];
+
+const grid = document.getElementById("grid");
+const empty = document.getElementById("empty");
+const searchBox = document.getElementById("search");
+const filterBox = document.getElementById("filters");
+let activeCat = "All";
+
+// Build the category buttons from the product list
+["All", ...new Set(products.map(p => p.cat))].forEach(cat => {
+  const b = document.createElement("button");
+  b.textContent = cat;
+  if (cat === "All") b.classList.add("active");
+  b.addEventListener("click", () => {
+    activeCat = cat;
+    filterBox.querySelectorAll("button").forEach(x => x.classList.toggle("active", x === b));
+    showCards();
+  });
+  filterBox.appendChild(b);
+});
+
+// Show only the products that match the search text and category
+function showCards() {
+  const q = searchBox.value.trim().toLowerCase();
+  const list = products.filter(p =>
+    (activeCat === "All" || p.cat === activeCat) &&
+    (p.name + " " + p.cat + " " + p.desc).toLowerCase().includes(q)
+  );
+  grid.innerHTML = "";
+  list.forEach(p => {
+    const card = document.createElement("button");
+    card.className = "card";
+    card.type = "button";
+    /* To use a real photo, replace the swatch div with:
+       <img src="images/your-photo.jpg" alt="${p.name}" style="width:100%;height:240px;object-fit:cover"> */
+    card.innerHTML = `<div class="swatch" style="background:${p.color}">${p.name[0]}</div>
+      <div class="info"><h3>${p.name}</h3><small>${p.cat}</small><div class="price">$${p.price}</div></div>`;
+    card.addEventListener("click", () => openModal(p));
+    grid.appendChild(card);
+  });
+  empty.hidden = list.length > 0;
+}
+searchBox.addEventListener("input", showCards);
+
+// Product popup
+const modal = document.getElementById("modal");
+function openModal(p) {
+  document.getElementById("mSwatch").style.background = p.color;
+  document.getElementById("mSwatch").textContent = p.name[0];
+  document.getElementById("mTitle").textContent = p.name;
+  document.getElementById("mCat").textContent = p.cat;
+  document.getElementById("mDesc").textContent = p.desc;
+  document.getElementById("mPrice").textContent = "$" + p.price;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+  document.getElementById("closeBtn").focus();
+}
+function closeModal() { modal.classList.remove("show"); modal.setAttribute("aria-hidden", "true"); }
+document.getElementById("closeBtn").addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+// Mobile menu
+const nav = document.getElementById("mainNav");
+const menuBtn = document.getElementById("menuBtn");
+menuBtn.addEventListener("click", () => {
+  const open = nav.classList.toggle("open");
+  menuBtn.setAttribute("aria-expanded", open);
+});
+nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open")));
+
+// Contact form: checks each field, then shows a confirmation.
+// NOTE: this demo does not send email. To receive messages, connect the form to a
+// service such as Formspree or Web3Forms (send the values below with fetch()).
+document.getElementById("contactForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const msg = document.getElementById("msg").value.trim();
+  const ok = document.getElementById("ok");
+  const set = (id, text) => document.getElementById(id).textContent = text;
+  set("nameErr", name ? "" : "Enter your name.");
+  set("emailErr", /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) ? "" : "Enter a valid email address.");
+  set("msgErr", msg.length >= 10 ? "" : "Write at least 10 characters.");
+  if (name && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) && msg.length >= 10) {
+    ok.style.display = "block";
+    e.target.reset();
+  } else {
+    ok.style.display = "none";
+  }
+});
+
+document.getElementById("year").textContent = new Date().getFullYear();
+showCards();
+</script>
+</body>
+</html>
